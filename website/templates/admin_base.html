@@ -1,0 +1,316 @@
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet"
+    href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <title>{% block title %}{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap');
+
+    * {
+      font-family: "Aldrich", sans-serif;
+      color: #444;
+    }
+    body {
+      overflow-x: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: lightgrey;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="min-h-screen bg-zinc-100 flex">
+    <div class="navigation-container w-44 bg-white border-r" style="position: fixed; height: 100vh">
+      <div class="p-4 flex items-center">
+        <span class="font-bold text-xl" style="margin-top: -13px">
+          <img style="object-fit: contain; height: 60px; width: 200px"
+            src="https://www.forbes.com/advisor/wp-content/uploads/2022/02/26-262308_personal-loan-lendingpoint.png"
+            alt="" />
+        </span>
+      </div>
+      <nav class="nav-items mt-4">
+        <a href="{{ url_for('admin_dashboard') }}"
+          class="flex font-bold flex-col items-center justify-center p-2 text-zinc-700 hover:bg-zinc-200 border-t"
+          style="height: 110px">
+          <span class="material-symbols-outlined"> dashboard </span>
+          Dashboard
+        </a>
+        <a href="{{ url_for('accounts') }}"
+          class="flex font-bold flex-col items-center justify-center p-2 text-zinc-700 hover:bg-zinc-200 border-t"
+          style="height: 110px">
+          <span class="material-symbols-outlined"> add_box </span>
+          Accounts
+        </a>
+        <a href="{{ url_for('view_deposits') }}"
+          class="flex font-bold flex-col items-center justify-center border-b p-2 text-zinc-700 hover:bg-zinc-200 border-t"
+          style="height: 110px">
+          <span class="material-symbols-outlined"> select_window_2 </span>
+          Deposits
+        </a>
+        <a href="{{ url_for('allocate') }}"
+          class="flex font-bold flex-col items-center justify-center border-b p-2 text-zinc-700 hover:bg-zinc-200 border-t"
+          style="height: 110px">
+          <span class="material-symbols-outlined"> select_window_2 </span>
+          Allocate
+        </a>
+        <a href="{{ url_for('logout') }}"
+          class="flex font-bold flex-col items-center justify-center border-b p-2 text-zinc-700 hover:bg-zinc-200 border-t"
+          style="height: 110px">
+          <span class="material-symbols-outlined"> logout </span>
+          Logout
+        </a>
+      </nav>
+    </div>
+
+    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto mt-4">
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Success</strong>
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                    {% elif category == 'error' %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Error</strong>
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                const flashMessage = document.getElementById('flash-message');
+                const flashOverlay = document.getElementById('flash-overlay');
+                if (flashMessage) {
+                  flashMessage.classList.add('show');
+                  flashOverlay.classList.add('show');
+                  setTimeout(() => {
+                    flashMessage.classList.remove('show');
+                    flashOverlay.classList.remove('show');
+                  }, 3000);
+                }
+              });
+            </script>
+        {% endif %}
+    {% endwith %} -->
+
+    <div class="flex-1 flex flex-col" style="margin-left: 175px">
+      <header class="flex items-center justify-between p-4 bg-white border-b">
+        <div class="flex items-center">
+          <button class="p-2">
+            <span class="material-symbols-outlined text-2xl"> menu </span>
+          </button>
+          <button class="ml-4 p-2 bg-purple-600 text-white rounded">
+            <span class="material-symbols-outlined"> add_box </span>
+          </button>
+          <input type="text" placeholder="Search anything..." class="ml-4 p-2 border rounded outline-none" />
+        </div>
+        <div class="flex items-center">
+          <button class="p-2">
+            <span class="material-symbols-outlined"> refresh </span>
+          </button>
+          <button class="ml-4 p-2">
+            <span class="material-symbols-outlined"> notifications </span>
+          </button>
+          <span class="flex items-center justify-center"
+            style="background-color: red; color: #fff; border-radius: 50%; height: 20px; width: 20px; font-size: 12px; margin:-20px 0 0 -10px;">0</span>
+          <div class="ml-4 flex items-center">
+            {% if user %}
+            <span class="ml-2 font-bold">{{ user.username }}</span>
+            <img style="height: 40px; width: 40px" src="{{ url_for('static', filename=user.profile_photo) }}" alt="User"
+              class="profile image rounded-full ml-3" />
+            {% else %}
+            <span class="ml-2 font-bold">ADMINISTRATOR</span>
+            <span class="material-symbols-outlined ml-2" style="font-size: 30px;">
+              account_circle
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </header>
+
+      <main class="p-4 flex-1 overflow-y-auto">
+        <div class="mb-4">
+          <h1 class="text-2xl font-bold">{% block header%}{% endblock %}</h1>
+          <p>Welcome to redial panel</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <div class="bg-white p-4 rounded shadow">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-bold">Approv. Accounts</h2>
+                <p>Today</p>
+              </div>
+              <img src="https://html.designstream.co.in/pollo/ltr/dist/images/traffic.png" alt="New Orders" />
+            </div>
+            <div class="mt-4">
+              <p class="text-2xl font-bold">{{ total_approved_users }}</p>
+              <p class="text-green-600">15% higher than last day</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-bold">New Accounts</h2>
+                <p>This Week</p>
+              </div>
+              <img style="height: 60px; width: 60px; object-fit: contain"
+                src="https://uxwing.com/wp-content/themes/uxwing/download/editing-user-action/create-account-icon.png"
+                alt="New Orders" />
+            </div>
+            <div class="mt-4">
+              <p class="text-2xl font-bold">{{ total_users }}</p>
+              <p class="text-red-600">4% Down than last week</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-bold">Total Deposits</h2>
+                <p>Last Months</p>
+              </div>
+              <img src="https://html.designstream.co.in/pollo/ltr/dist/images/money.png" alt="Total Sale" />
+            </div>
+            <div class="mt-4">
+              <p class="text-2xl font-bold">{{ total_deposits }}</p>
+              <p class="text-green-600">8% higher than last week</p>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded shadow">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-bold">Interests</h2>
+                <p>In February-2019</p>
+              </div>
+              <img style="height: 70px; width: 70px; object-fit: contain"
+                src="https://cdn.iconscout.com/icon/premium/png-256-thumb/subscription-1742767-1479842.png?f=webp&w=256"
+                alt="Total Profit" />
+            </div>
+            <div class="mt-4">
+              <p class="text-2xl font-bold">{{ total_sum }}</p>
+              <p class="text-green-600">18% higher than last month</p>
+            </div>
+          </div>
+        </div>
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2019-09-09', '2019-09-10', '2019-09-11', '2019-09-12', '2019-09-13', '2019-09-14'],
+        datasets: [{
+          label: 'Revenue',
+          data: [200, 800, 2250, 1771, 110, 1230],
+          borderColor: 'rgba(124, 58, 237, 1)',
+          backgroundColor: 'rgba(124, 58, 237, 0.2)',
+          pointBackgroundColor: 'rgba(124, 58, 237, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(124, 58, 237, 1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return '$' + value;
+              }
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return `Sale: $${context.raw}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+  <script>
+    const approvedBtn = document.getElementById('approvedBtn');
+    const pendingBtn = document.getElementById('pendingBtn');
+    const notApprovedBtn = document.getElementById('notApprovedBtn');
+    const approvedContent = document.getElementById('approvedContent');
+    const pendingContent = document.getElementById('pendingContent');
+    const notApprovedContent = document.getElementById('notApprovedContent');
+    approvedContent.classList.remove('hidden');
+    approvedBtn.style.border = '1px solid black';
+
+    approvedBtn.addEventListener('click', () => {
+      approvedContent.classList.remove('hidden');
+      pendingContent.classList.add('hidden');
+      notApprovedContent.classList.add('hidden');
+      approvedBtn.style.border = '1px solid black';
+      pendingBtn.style.border = 'none';
+      notApprovedBtn.style.border = 'none';
+    });
+
+    pendingBtn.addEventListener('click', () => {
+      approvedContent.classList.add('hidden');
+      pendingContent.classList.remove('hidden');
+      notApprovedContent.classList.add('hidden');
+      approvedBtn.style.border = 'none';
+      pendingBtn.style.border = '1px solid black';
+      notApprovedBtn.style.border = 'none';
+    });
+
+    notApprovedBtn.addEventListener('click', () => {
+      approvedContent.classList.add('hidden');
+      pendingContent.classList.add('hidden');
+      notApprovedContent.classList.remove('hidden');
+      approvedBtn.style.border = 'none';
+      pendingBtn.style.border = 'none';
+      notApprovedBtn.style.border = '1px solid black';
+    });
+  </script>
+</body>
+
+</html>

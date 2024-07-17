@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}Dashboard{% endblock %}
+{% block content %}
+<style>
+    .hidden {
+        display: none;
+    }
+
+    .active-button {
+        color: purple;
+        border-color: purple;
+    }
+
+    .inactive-button {
+        color: darkgrey;
+    }
+
+    .user-list {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .user-list th {
+        background-color: #f2f2f2;
+    }
+
+    .user-list th,
+    .user-list td {
+        border-bottom: 1px solid #f2f2f2;
+        padding: 6px;
+        text-align: left;
+    }
+
+    .user-list .material-symbols-outlined {
+        font-size: 12px;
+    }
+
+    .user-list .email {
+        width: 150px;
+    }
+
+    .user-list .phone {
+        width: 120px;
+    }
+</style>
+<div class="flex">
+    <!-- <div class="p-4 mt-5" style="border-radius: 5px; background-color: #ffffff; width: 65%">
+        <div class="flex items-center justify-between" style="border-bottom: 1px solid #e5e5e5;">
+            <h2 class="text-xl font-semibold mb-1">STATISTICS</h2>
+            <div class="flex justify-end mb-4">
+                <button class="bg-purple-500 text-white px-4 py-2 rounded-lg mr-2">Accounts</button>
+                <button class="px-4 py-2 rounded-lg mr-2">Deposits</button>
+                <button class="px-4 py-2 rounded-lg">Subscriptions</button>
+            </div>
+        </div>
+        <div>
+            <canvas id="revenueChart" class="w-full h-64"></canvas>
+        </div>
+    </div> -->
+
+</div>
+<div class="flex flex-col md:flex-row gap-4 mt-5">
+    <div class="w-full md:w-1/2 bg-white shadow-md p-4" style="border-radius: 5px; width: 440px;">
+        <div class="flex items-center justify-between" style="border-bottom: 3px dotted #e5e5e5;">
+            <h2 class="text-lg font-semibold mb-1">RECENT ACTIVITIES</h2>
+            <div class="flex justify-between mb-2">
+                <div class="flex space-x-4">
+                    <button id="accountsButton" class="active-button">Accounts</button>
+                    <button id="depositsButton" class="inactive-button">Deposits</button>
+                </div>
+            </div>
+        </div>
+        <div class="space-y-4 mt-5">
+            <div id="accountsContent" style="height: 350px;">
+                <table class="user-list" style="font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th>PROFILE</th>
+                            <th>USERNAME</th>
+                            <th>EMAIL</th>
+                            <th>PHONE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr class="user">
+                            <td>
+                                <img style="height: 20px; width: 20px; border-radius: 50%;object-fit: cover;"
+                                    src="{{ user.profile_photo }}" alt="">
+                            </td>
+                            <td class="username">{{ user.username }}</td>
+                            <td class="email">{{ user.email }}</td>
+                            <td class="phone">{{ user.phone }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div id="depositsContent" class="hidden" style="height: 350px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        {% for deposit in deposits %}
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px;"><span
+                                    class="material-symbols-outlined">account_balance_wallet</span>
+                            </td>
+                            <td style="padding: 10px; font-size: 12px;">{{ deposit.name }}</td>
+                            <td style="padding: 10px; font-size: 12px;">{{ deposit.email }}</td>
+                            <td style="padding: 10px; font-size: 12px;">{{ deposit.amount }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full md:w-1/2 bg-white  shadow-md p-4" style="border-radius: 5px; width: 685px; height: 400px;">
+        <div style="border-bottom: 3px dotted #e5e5e5;">
+            <h2 class="text-lg font-semibold mb-1">MESSAGES</h2>
+        </div>
+        <div class="space-y-4 mt-5">
+
+            <div class="message-container">
+                {% for message in messages %}
+                <div class="message flex mt-2 pb-2" style="border-bottom: 1px solid #ddd;">
+                    <span style="font-size: 20px; " class="material-symbols-outlined">
+                        mark_email_unread
+                    </span>
+                    <div class="ml-3">
+                        <p style="font-size: 13px;"> {{ message.first_name }}</p>
+                        <!-- Exclude Last Name, Phone Number, and City -->
+                        <p style="font-size: 13px; font-weight: bold; color: #2ea99e; text-decoration-line: underline;">
+                            {{ message.email_address }}</p>
+                        <p style="font-size: 13px;"> {{ message.message[:150] }}{% if message.message|length > 50
+                            %}...{% endif %}</p>
+                        <!-- Format Created At to show only the date -->
+                        <p style="font-size: 11px; color: #888; font-style: italic; margin-left: 510px;"> {{
+                            message.created_at.strftime('%Y-%m-%d') }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<div class="p-4 bg-white rounded shadow-md" style="background-color: #fff; width: 450px; margin: 20px 0 0 0;">
+    <div class="flex items-center justify-between" style="border-bottom: 3px dotted #e5e5e5;">
+        <h2 class="text-lg font-semibold my-3">Request Loan</h2>
+        <div class="flex justify-between mb-2">
+            <div class="flex space-x-4">
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="/submit_loan_application" style="font-size: 13px;" class="mt-4">
+        <div class="flex items-center justify-between">
+            <div class="form-group">
+                <input style="border: 1px solid #333; outline: none; border-radius: 4px; margin-top: 7px; padding: 6px;" type="text" id="username" name="username" placeholder="Username" value="{{ session['username'] }}" readonly required>
+            </div>
+            <div class="form-group">
+                <input style="border: 1px solid #333; outline: none; border-radius: 4px; margin-top: 7px; padding: 6px;" type="email" id="email" name="email" placeholder="Email Address" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <input style="border: 1px solid #333; width: 100%; outline: none; border-radius: 4px; margin-top: 7px; padding: 6px;" type="text" id="session_id" name="session_id" value="{{ session['session_id'] }}" readonly>
+        </div>
+        <div class="form-group">
+            <select style="border: 1px solid #333; width: 100%; outline: none; border-radius: 4px; margin-top: 7px; padding: 6px;" id="loan_type" name="loan_type" required>
+                <option value="emergency">Emergency Loan</option>
+                <option value="normal">Normal Loan</option>
+                <option value="short">Short Term Loan</option>
+                <option value="development">Development Loan</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input style="border: 1px solid #333; width: 100%; outline: none; border-radius: 4px; margin-top: 7px; padding: 6px;" type="number" id="amount" name="amount" placeholder="Amount" required>
+        </div>
+        <button style="background-color: #9333ea; padding: 6px; color: #fff; border-radius: 4px; margin-top: 7px;" type="submit">Submit</button>
+    </form>
+    
+    
+
+
+</div>
+<script>
+    document.getElementById('accountsButton').addEventListener('click', function () {
+        document.getElementById('accountsContent').classList.remove('hidden');
+        document.getElementById('depositsContent').classList.add('hidden');
+        this.classList.add('active-button');
+        this.classList.remove('inactive-button');
+        document.getElementById('depositsButton').classList.remove('active-button');
+        document.getElementById('depositsButton').classList.add('inactive-button');
+    });
+
+    document.getElementById('depositsButton').addEventListener('click', function () {
+        document.getElementById('accountsContent').classList.add('hidden');
+        document.getElementById('depositsContent').classList.remove('hidden');
+        this.classList.add('active-button');
+        this.classList.remove('inactive-button');
+        document.getElementById('accountsButton').classList.remove('active-button');
+        document.getElementById('accountsButton').classList.add('inactive-button');
+    });
+</script>
+{% endblock %}
+
+</main>
+</div>
+</div>
+</body>
+
+</html>

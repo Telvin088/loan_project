@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Deposit{% endblock %}
+{% block header%}Deposit{% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row items-start space-y-6 md:space-y-0 md:space-x-6 p-6">
+    <div class="bg-white white:bg-zinc-800 p-6 rounded shadow-lg" style="width: 605px; margin-left: -22px;">
+        <h2 class="text-2xl font-bold mb-4">Deposit Form</h2>
+        <form method="post" action="{{ url_for('process_deposit') }}">
+            <div class="mb-4">
+                <label class="block text-zinc-700 dark:text-zinc-300 mb-2" for="full-name">Full Name</label>
+                <input name="name" value="{{ user.username }}" class="w-full p-3 border border-zinc-300 rounded-lg outline-none" type="text" id="full-name"
+                    readonly />
+            </div>
+            <div class="mb-4">
+                <label class="block text-zinc-700 dark:text-zinc-300 mb-2" for="email">Email</label>
+                <input name="email" value="{{ user.email }}" class="w-full p-3 border border-zinc-300 rounded-lg outline-none" type="email" id="email"
+                    readonly />
+            </div>
+            <div class="mb-4">
+                <label class="block text-zinc-700 dark:text-zinc-300 mb-2" for="amount">Amount to Deposit</label>
+                <input name="amount" class="w-full p-3 border border-zinc-300 rounded-lg outline-none" type="number" id="amount"
+                    placeholder="100.00" />
+            </div>
+            <!-- Add hidden input for phone number -->
+            <input type="hidden" name="phone" value="{{ user.phone }}">
+            <button class="bg-blue-500 text-white p-2 rounded-lg w-full" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="white:bg-zinc-700 p-6 rounded shadow-lg" style="background-color: #fff; margin-left: 20px;">
+        <h2 class="text-2xl font-bold mb-4">Recent Deposits</h2>
+        <div class="space-y-4">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                </thead>
+                <tbody>
+                    {% for deposit in deposits %}
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 10px;"><span class="material-symbols-outlined">account_balance_wallet</span></td>
+                        <td style="padding: 10px; font-size: 14px;">{{ deposit.name }}</td>
+                        <td style="padding: 10px; font-size: 14px;">{{ deposit.email }}</td>
+                        <td style="padding: 10px; font-size: 14px;">{{ deposit.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

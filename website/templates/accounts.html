@@ -1,0 +1,58 @@
+{% extends 'admin_base.html' %}
+{% block title %}Admin Dash {% endblock %}
+{% block header %}Admin Dashboard{% endblock %}
+{% block content %}
+<style>
+    table {
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #fff;
+        border: none;
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    td {
+        background-color: #fff;
+        border: none;
+        padding: 10px;
+    }
+</style>
+    <table border="1">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>USERNAME</th>
+                <th>EMAIL</th>
+                <th>PHONE</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <img style="height: 20px; width: 20px; border-radius: 50%;object-fit: cover;"
+                        src="{{ user.profile_photo }}" alt="">
+                </td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.status }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('approve_user', user_id=user.id) }}" style="display:inline;">
+                        <button style="background-color: #26a69a; border: none; color: #fff; padding: 5px; font-size: 12px; border-radius: 3px; font-weight: bold;" type="submit">Approve</button>
+                    </form>
+                    <form method="post" action="{{ url_for('disapprove_user', user_id=user.id) }}" style="display:inline;">
+                        <button style="background-color: #ff4886; border: none; color: #fff; padding: 5px; font-size: 13px; border-radius: 3px; font-weight: bold;" class="ml-1" type="submit">Disapprove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block header%}Profile{% endblock %}
+{% block content %}
+<div class="flex">
+  <div class="mx-auto bg-white dark:white-zinc-800 rounded-lg shadow-lg p-6"
+    style="width: 380px; height: 450px; margin-left: -1px;">
+    <div class="flex justify-center">
+      <img class="w-32 h-32 rounded-full" src="https://placehold.co/128x128" alt="Profile Picture">
+    </div>
+    <div class="text-center mt-4">
+      <h2 class="text-xl font-semibold text-zinc-800 dark:text-zinc-200" style="color: #464855;">TELVIN MAINA</h2>
+      <p class="text-zinc-600 dark:text-zinc-400" style="color: #464855;">LOANEE</p>
+    </div>
+    <div class="flex justify-center space-x-4 mt-4">
+      <a href="#" class="text-blue-600 dark:text-blue-400">
+        <i class="lab la-facebook-square" style="font-size: 25px;"></i>
+      </a>
+      <a href="#" class="text-blue-400 dark:text-blue-300">
+        <i class="lab la-twitter-square" style="font-size: 25px;"></i>
+      </a>
+      <a href="#" class="text-blue-700 dark:text-blue-500">
+        <i class="lab la-linkedin" style="font-size: 25px;"></i>
+      </a>
+    </div>
+    <div class="mt-6">
+      <a href="{{ url_for('logout') }}">
+        <button class="w-full bg-blue-500 text-white py-2 rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+          LogOut
+        </button>
+      </a>
+    </div>
+  </div>
+  <div class="max-w-4xl mx-auto p-4 bg-white white:bg-zinc-800 rounded-lg shadow-md" style="margin-right: -1px;">
+    <div class="flex justify-between items-center border-b pb-2 mb-4">
+      <div>
+        <button class="text-orange-500 border-b-2 border-orange-500">Profile</button>
+        <button class="ml-4 text-zinc-500 dark:text-zinc-300">Change Password</button>
+      </div>
+    </div>
+    <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-4">
+      <p class="font-semibold">Profile Updated Successfully!</p>
+      <p>Your Profile is now Complete. Click on any menu on the left to access HELB Services.</p>
+    </div>
+    <div class="border-b pb-2 mb-4">
+      <h2 class="text-lg font-semibold flex items-center">
+        <span class="material-symbols-outlined">
+          group
+        </span>
+        Personal Details-Applicant <span class="text-red-500">(** Mandatory Fields)</span>
+      </h2>
+    </div>
+    <form class="space-y-4" action="{{ url_for('profile') }}" method="post" enctype="multipart/form-data">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">First Name <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="first_name" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2 p-2" readonly
+            value="{{ user.first_name }}"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Middle Name</label>
+          <input type="text" name="middle_name" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2" value="{{ session['middle_name'] }}"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Last Name <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="last_name" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2" value="{{ session['last_name'] }}"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">ID Number <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="identification"
+            class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"" style=" border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class=" block text-sm font-medium text-zinc-700 dark:text-zinc-300">KRA Pin <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="kra_pin" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Religion <span
+              class="text-red-500">*</span></label>
+          <select name="religion" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+            <option>Christianity</option>
+            <option>Islam</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Date of Birth <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="dob" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Telephone <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="telephone" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2" value="{{ session['phone'] }}" readonly
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Gender <span
+              class="text-red-500">*</span></label>
+          <select name="gender" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Marital Status <span
+              class="text-red-500">*</span></label>
+          <select name="marital_status" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Are you a person with a disability?
+            <span class="text-red-500">*</span></label>
+          <select name="disability" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Are you employed? <span
+              class="text-red-500">*</span></label>
+          <select name="employed" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Education level Admitted <span
+              class="text-red-500">*</span></label>
+          <select name="education" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+            <option>Degree</option>
+            <option>Higher Diploma</option>
+            <option>K.C.S.E</option>
+            <option>K.C.P.E</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Upload Your Photo (300Px *
+          250Px)</label>
+        <div class="flex items-center mt-2">
+          <img class="w-24 h-24 rounded-full" src="https://placehold.co/100x100" alt="Profile Image">
+          <input type="file" name="profile_photo" class="ml-4 bg-teal-500 text-white py-2 px-4 rounded-md">
+          <!-- <button class="ml-4 bg-teal-500 text-white py-2 px-4 rounded-md">Select image</button> -->
+        </div>
+      </div>
+
+      <div class="border-b pb-2 mt-8 mb-4">
+        <h2 class="text-lg font-semibold flex items-center">
+          <span class="material-symbols-outlined">
+            mail
+          </span>
+          Where Do You Come From?
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Box No # <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="po_box" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Postal Code <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="postal_code" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Town <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="town" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">County <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="county" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Constituency <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="constituency" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Ward <span
+              class="text-red-500">*</span></label>
+          <input type="text" name="ward" class="mt-1 block w-full border-zinc-300 rounded-md shadow-sm p-2"
+            style="border: 1px solid #ddd;">
+        </div>
+      </div>
+
+      <div class="mt-8 flex justify-center">
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-md flex items-center">
+          <span class="material-symbols-outlined">
+            check_box
+          </span>
+          Save Details
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

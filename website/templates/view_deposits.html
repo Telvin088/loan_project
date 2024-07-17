@@ -1,0 +1,43 @@
+{% extends 'admin_base.html' %}
+{% block title %}View Deposits{% endblock %}
+{% block header %}View Deposits{% endblock %}
+{% block content %}
+<style>
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        background-color: #fff;
+        border: none;
+        border-bottom: 1px solid #f2f2f2;
+    }
+</style>
+<table border="1" style="width: 865px;">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for deposit in deposits %}
+        <tr>
+            <td>
+                <span class="material-symbols-outlined">
+                    check_box
+                    </span>
+            </td>
+            <td>{{ deposit.name }}</td>
+            <td>{{ deposit.email }}</td>
+            <td>{{ deposit.amount }}</td>
+            <td>{{ deposit.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

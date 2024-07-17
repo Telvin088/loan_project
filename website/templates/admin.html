@@ -1,0 +1,140 @@
+{% extends 'admin_base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block header %}Admin Dashboard{% endblock %}
+{% block content %}
+<style>
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        background-color: #fff;
+        border: none;
+        border-bottom: 1px solid #f2f2f2;
+    }
+</style>
+<div class="w-full bg-white shadow-md rounded-lg p-4 white:bg-zinc-800">
+    <div class="flex">
+        <button id="approvedBtn" style="font-size: 12px;"
+            class="bg-green-500 text-white p-2 rounded-lg border border-transparent focus:outline-none focus:border-black">Approved</button>
+        <button id="pendingBtn" style="font-size: 12px;"
+            class="bg-yellow-500 text-white p-2 ml-2 rounded-lg border border-transparent focus:outline-none focus:border-black">Pending</button>
+        <button id="notApprovedBtn" style="font-size: 12px;"
+            class="bg-red-500 text-white p-2 ml-2 rounded-lg border border-transparent focus:outline-none focus:border-black">Not
+            Approved</button>
+    </div>
+    <div id="approvedContent" class="mt-4">
+        <table style="border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in approved_users %}
+                <tr>
+                    <td>
+                        <img style="height: 20px; width: 20px; border-radius: 50%;object-fit: cover;"
+                            src="{{ user.profile_photo }}" alt="">
+                    </td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.amount }}</td>
+                    <td>{{ user.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="pendingContent" class="hidden mt-4">
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in pending_users %}
+                <tr>
+                    <td>
+                        <img style="height: 20px; width: 20px; border-radius: 50%;object-fit: cover;"
+                            src="{{ user.profile_photo }}" alt="">
+                    </td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.amount }}</td>
+                    <td>{{ user.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="notApprovedContent" class="hidden mt-4">
+        <table border="1" style="border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in not_approved_users %}
+                <tr>
+                    <td><span class="material-symbols-outlined">
+                        account_circle
+                        </span></td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.amount }}</td>
+                    <td>{{ user.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById('approvedBtn').addEventListener('click', function() {
+        document.getElementById('approvedContent').classList.remove('hidden');
+        document.getElementById('pendingContent').classList.add('hidden');
+        document.getElementById('notApprovedContent').classList.add('hidden');
+    });
+
+    document.getElementById('pendingBtn').addEventListener('click', function() {
+        document.getElementById('approvedContent').classList.add('hidden');
+        document.getElementById('pendingContent').classList.remove('hidden');
+        document.getElementById('notApprovedContent').classList.add('hidden');
+    });
+
+    document.getElementById('notApprovedBtn').addEventListener('click', function() {
+        document.getElementById('approvedContent').classList.add('hidden');
+        document.getElementById('pendingContent').classList.add('hidden');
+        document.getElementById('notApprovedContent').classList.remove('hidden');
+    });
+</script>
+
+{% endblock %}

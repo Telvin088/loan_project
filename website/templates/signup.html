@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-green-500 p-8 rounded shadow-lg w-full max-w-sm">
+        <h2 class="text-2xl font-bold mb-4 text-center text-white">Signup</h2>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="username" class="block text-white">Username:</label>
+                <input type="text" id="username" name="username" required class="w-full px-3 py-2 border rounded outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+            <div>
+                <label for="email" class="block text-white">Email Address:</label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border rounded outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+            <div>
+                <label for="phone" class="block text-white">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required class="w-full px-3 py-2 border rounded outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+            <div>
+                <label for="profile_photo" class="block text-white">Profile Photo:</label>
+                <input type="file" id="profile_photo" name="profile_photo" accept="image/*" required class="w-full px-3 py-2 border rounded outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+            <div>
+                <label for="password" class="block text-white">Password:</label>
+                <input type="password" id="password" name="password" required class="w-full px-3 py-2 border rounded outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+            <div>
+                <label for="confirm_password" class="block text-white">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required class="w-full px-3 py-2 border rounded outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+            <!-- Add a readonly field for the amount -->
+            <input type="hidden" name="amount" value="2500">
+            <div class="text-center">
+                <input type="submit" value="Signup" class="bg-white text-green-500 px-4 py-2 rounded shadow hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

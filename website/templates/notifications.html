@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Deposit{% endblock %}
+{% block header%}Deposit{% endblock %}
+{% block content %}
+<div class="flex h-screen">
+
+    <div class="w-1/4 bg-zinc-100">
+        <div class="bg-white p-4 rounded shadow">
+            <h2 class="text-zinc-600 font-bold mb-2">Allocation History</h2>
+
+                {% if allocation_messages %}
+                {% for message in allocation_messages %}
+                <div class="allocation-message mb-2" style="font-size: 13px;">
+                    <p><strong style="font-size: 12px;">User ID:</strong> {{ message.session_id }}</p>
+                    <!-- Replace '%Y-%m-%d' with the format you desire for the date -->
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>No allocation messages found.</p>
+                {% endif %}
+
+
+        </div>
+    </div>
+
+
+    <div class="ml-4" style="width: 900px;">
+        <div>
+            {% if allocation_messages %}
+            {% for message in allocation_messages %}
+            <div class="allocation-message border rounded bg-white p-4 rounded shadow mb-3">
+                <p>{{ message.message }}</p>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No allocation messages found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

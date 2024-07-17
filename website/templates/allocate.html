@@ -1,0 +1,143 @@
+{% extends 'admin_base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block header %}Admin Dashboard{% endblock %}
+{% block content %}
+<style>
+    table {
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        background-color: #fff;
+        border: none;
+        border-bottom: 1px solid #f2f2f2;
+    }
+
+    th {
+        font-size: 11px;
+    }
+
+    .popup-form {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        z-index: 1000;
+        display: none;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+    }
+</style>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>USERNAME</th>
+            <th>EMAIL</th>
+            <th>TYPE</th>
+            <th>AMOUNT</th>
+            <th>INTEREST</th>
+            <th>REFUND</th>
+            <th>APPLIC. DATE</th>
+            <th>ACTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for application in loan_applications %}
+        <tr>
+            <td>{{ application['session_id'] }}</td>
+            <td>{{ application['username'] }}</td>
+            <td>{{ application['email'] }}</td>
+            <td>{{ application['loan_type'] }}</td>
+            <td>{{ application['amount'] }}</td>
+            <td>{{ application['interest'] }}</td>
+            <td>{{ '%.2f' | format(application['amount'] * (1 + application['interest'] / Decimal('100'))) }}</td>
+            <td>{{ application['application_date'] }}</td>
+            <td>
+                <button class="allocate-button rounded" data-username="{{ application['username'] }}"
+                    data-session-id="{{ application['session_id'] }}" data-email="{{ application['email'] }}"
+                    data-amount="{{ application['amount'] }}"
+                    style="background-color: #16a34a; padding: 4px; color: #fff;"
+                    data-refund="{{ '%.2f' | format(application['amount'] * (1 + application['interest'] / Decimal('100'))) }}">
+                    ALLOCATE
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="overlay"></div>
+<div class="popup-form">
+    <span style="margin-left: 90%; color: red; cursor: pointer;" class="close-btn material-symbols-outlined">
+        close
+    </span>
+    <form id="allocationForm" action="/update_allocated" method="post">
+        <label for="amount">Name:</label><br>
+        <input id="username" name="username" style="border: 1px solid #444;" class="rounded p-1" readonly><br>
+        <label for="amount">ID:</label><br>
+        <input id="session_id" name="session_id" style="border: 1px solid #444;" class="rounded p-1" readonly><br>
+        <label for="amount">Email:</label><br>
+        <input id="email" name="email" style="border: 1px solid #444;" class="rounded p-1" readonly><br>
+        <label for="amount">Amount:</label><br>
+        <input type="text" id="amount" name="amount" style="border: 1px solid #444;" class="p-1 rounded" readonly><br>
+        <label for="refund" class="mt-4">Refund:</label><br>
+        <input type="text" id="refund" name="refund" style="border: 1px solid #444;" class="p-1 rounded" readonly><br>
+        <button style="background-color: #16a34a; padding: 4px; color: #fff;" class="rounded mt-2" type="submit"
+            id="submitAllocation">Submit</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Show popup form and overlay when allocate button is clicked
+        $('.allocate-button').click(function () {
+            var username = $(this).data('username');
+            var sessionId = $(this).data('session-id');
+            var email = $(this).data('email');
+            var amount = $(this).data('amount');
+            var refund = $(this).data('refund');
+
+            $('#username').val(username);
+            $('#session_id').val(sessionId);
+            $('#email').val(email);
+            $('#amount').val(amount);
+            $('#refund').val(refund);
+
+            $('.popup-form').fadeIn();
+            $('.overlay').fadeIn();
+        });
+
+        // Close popup form when close button or overlay is clicked
+        $('.close-btn, .overlay').click(function () {
+            $('.popup-form').fadeOut();
+            $('.overlay').fadeOut();
+        });
+
+        // Validate refund input (example: ensure it's a number)
+        $('#submitAllocation').click(function () {
+            var refund = $('#refund').val();
+            // Example validation
+            if (isNaN(refund)) {
+                alert('Refund amount must be a number');
+                return false;
+            }
+        });
+    });
+</script>
+{% endblock %}
